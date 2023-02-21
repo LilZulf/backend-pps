@@ -29,6 +29,7 @@ export const createSuratKeluar = (req, res) => {
     const tanggal_surat = req.body.tanggal_surat;
     const tanggal_upload = req.body.tanggal_upload;
     const status = req.body.status;
+    const jenis_surat = req.body.jenis_surat;
     const no_surat = req.body.no_surat;
     const file = req.files.file;
     const fileSize = file.data.length;
@@ -45,7 +46,8 @@ export const createSuratKeluar = (req, res) => {
         try {
             await SuratKeluar.create({
                 no_surat: no_surat, judul: judul, tanggal_surat: tanggal_surat,
-                tanggal_upload: tanggal_upload, status: status, file: url, fileName: fileName
+                tanggal_upload: tanggal_upload, status: status, jenis_surat: jenis_surat
+                , file: url, fileName: fileName
             });
             res.status(201).json({ msg: "SK Created Successfuly" });
         } catch (error) {
@@ -87,13 +89,14 @@ export const updateSuratKeluar = async (req, res) => {
     const tanggal_surat = req.body.tanggal_surat;
     const tanggal_upload = req.body.tanggal_upload;
     const status = req.body.status;
+    const jenis_surat = req.body.jenis_surat;
     const no_surat = req.body.no_surat;
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
 
     try {
         await SuratKeluar.update({
             no_surat: no_surat, judul: judul, tanggal_surat: tanggal_surat,
-            tanggal_upload: tanggal_upload, status: status, file: url, fileName: fileName
+            tanggal_upload: tanggal_upload, status: status,jenis_surat: jenis_surat ,file: url, fileName: fileName
         }, {
             where: {
                 id: req.params.id
