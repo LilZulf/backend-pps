@@ -52,6 +52,7 @@ export const createSuratKeluar = (req, res) => {
             res.status(201).json({ msg: "SK Created Successfuly" });
         } catch (error) {
             console.log(error.message);
+            res.status(500).json({ msg: "Something went wrong" });
         }
     })
 
@@ -79,11 +80,12 @@ export const updateSuratKeluar = async (req, res) => {
         if (fileSize > 10000000) return res.status(422).json({ msg: "Image must be less than 10 MB" });
 
         const filepath = `./public/files/${suratKeluar.fileName}`;
-        fs.unlinkSync(filepath);
+        
 
-        file.mv(`./public/images/${fileName}`, (err) => {
+        file.mv(`./public/files/${fileName}`, (err) => {
             if (err) return res.status(500).json({ msg: err.message });
         });
+        fs.unlinkSync(filepath);
     }
     const judul = req.body.judul;
     const tanggal_surat = req.body.tanggal_surat;
@@ -91,12 +93,12 @@ export const updateSuratKeluar = async (req, res) => {
     const status = req.body.status;
     const jenis_surat = req.body.jenis_surat;
     const no_surat = req.body.no_surat;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    const url = `${req.protocol}://${req.get("host")}/files/${fileName}`;
 
     try {
         await SuratKeluar.update({
             no_surat: no_surat, judul: judul, tanggal_surat: tanggal_surat,
-            tanggal_upload: tanggal_upload, status: status,jenis_surat: jenis_surat ,file: url, fileName: fileName
+            tanggal_upload: tanggal_upload, status: status, jenis_surat: jenis_surat, file: url, fileName: fileName
         }, {
             where: {
                 id: req.params.id
@@ -117,7 +119,7 @@ export const deleteSuratKeluar = async (req, res) => {
     if (!suratKeluar) return res.status(404).json({ msg: "No Data Found" });
 
     try {
-        const filepath = `./public/images/${suratKeluar.image}`;
+        const filepath = `./public/files/${suratKeluar.fileName}`;
         fs.unlinkSync(filepath);
         await SuratKeluar.destroy({
             where: {
