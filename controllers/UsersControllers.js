@@ -54,10 +54,14 @@ export const registerUser = async (req, res) => {
       jabatan,
       terakhir_masuk,
     });
+    const newUser = await Users.findOne({ where: { email } });
 
-    // Generate and return JWT token
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: JWT_EXPIRE });
-    res.json({ token });
+    res.json({
+      id: newUser.id,
+      nama: newUser.nama,
+      email: newUser.email,
+      password: newUser.password
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: 'Server error' + JWT_SECRET });
@@ -73,14 +77,14 @@ export const loginUser = async (req, res) => {
 
     // If user is not found, return error
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Email Tidak Ditemukan' });
     }
 
     // Check if password matches
     const isMatch = await user.comparePassword(password);
 
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Password Salah!' });
     }
 
     // Generate and return JWT token
@@ -91,6 +95,8 @@ export const loginUser = async (req, res) => {
     res.json({
       id: user.id,
       nama: user.nama,
+      email: user.email,
+      password: user.password,
       token
     });
   } catch (error) {
