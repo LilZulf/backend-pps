@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import moment from 'moment-timezone';
 import db from '../config/Database.js';
 
 const { DataTypes } = Sequelize;
@@ -23,8 +24,10 @@ Users.prototype.comparePassword = async function (enteredPassword) {
 
 // Method to generate and sign JWT token
 Users.prototype.generateAuthToken = function () {
+  const expirationTime = moment().add(1, 'hour').tz('Asia/Jakarta').toDate();
+  const expirationInSeconds = Math.floor(expirationTime.getTime() / 1000);
   return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE
+    expiresIn: expirationInSeconds
   });
 };
 

@@ -1,4 +1,5 @@
 import express from "express";
+import { authenticateToken } from "../middleware/authenticateToken.js";
 
 import {
     getSuratKeluar,
@@ -16,7 +17,7 @@ import {
 
 const router = express.Router();
 
-router.get('/suratkeluar', getSuratKeluar);
+router.get('/suratkeluar', authenticateToken,getSuratKeluar);
 router.get('/suratkeluar/:id', getSuratKeluarById);
 router.post('/suratkeluar', createSuratKeluar);
 router.patch('/suratkeluar/:id', updateSuratKeluar);
