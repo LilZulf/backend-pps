@@ -24,7 +24,7 @@ Users.prototype.comparePassword = async function (enteredPassword) {
 
 // Method to generate and sign JWT token
 Users.prototype.generateAuthToken = function () {
-  const expirationTime = moment().add(1, 'hour').tz('Asia/Jakarta').toDate();
+  const expirationTime = moment().add(2, 'hour').tz('Asia/Jakarta').toDate();
   const expirationInSeconds = Math.floor(expirationTime.getTime() / 1000);
   return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
     expiresIn: expirationInSeconds

@@ -17,13 +17,13 @@ import {
 
 const router = express.Router();
 
-router.get('/suratkeluar', authenticateToken,getSuratKeluar);
-router.get('/suratkeluar/:id', getSuratKeluarById);
-router.post('/suratkeluar', createSuratKeluar);
-router.patch('/suratkeluar/:id', updateSuratKeluar);
-router.delete('/suratkeluar/:id', deleteSuratKeluar);
-router.get('/users', getUsers);
-router.get('/user/:id', getUsersById);
+router.get('/suratkeluar', authenticateToken, getSuratKeluar);
+router.get('/suratkeluar/:id', authenticateToken, getSuratKeluarById);
+router.post('/suratkeluar', authenticateToken, createSuratKeluar);
+router.patch('/suratkeluar/:id', authenticateToken, updateSuratKeluar);
+router.delete('/suratkeluar/:id', authenticateToken, deleteSuratKeluar);
+router.get('/users', authenticateToken, getUsers);
+router.get('/user/:id', authenticateToken, getUsersById);
 router.post('/user/login', loginUser);
 router.post('/user/register', registerUser);
 
