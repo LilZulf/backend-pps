@@ -17,6 +17,10 @@ import {
 
 const router = express.Router();
 
+
+router.get('/', (req, res) => {
+    res.send('Server is active');
+  });
 router.get('/suratkeluar', authenticateToken, getSuratKeluar);
 router.get('/suratkeluar/:id', authenticateToken, getSuratKeluarById);
 router.post('/suratkeluar', authenticateToken, createSuratKeluar);
