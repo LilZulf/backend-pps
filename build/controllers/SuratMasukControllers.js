@@ -1,19 +1,19 @@
-import SuratKeluar from "../models/SuratKeluarModel.js";
+import SuratMasuk from "../models/SuratMasukModel.js";
 import path from "path";
 import fs from "fs";
 
-export const getSuratKeluar = async (req, res) => {
+export const getSuratMasuk = async (req, res) => {
     try {
-        const response = await SuratKeluar.findAll();
+        const response = await SuratMasuk.findAll();
         res.status(200).json(response);
     } catch (error) {
         console.log(error.message);
     }
 }
 
-export const getSuratKeluarById = async (req, res) => {
+export const getSuratMasukById = async (req, res) => {
     try {
-        const response = await SuratKeluar.findOne({
+        const response = await SuratMasuk.findOne({
             where: {
                 id: req.params.id
             }
@@ -23,13 +23,13 @@ export const getSuratKeluarById = async (req, res) => {
         console.log(error.message);
     }
 }
-export const createSuratKeluar = (req, res) => {
+export const createSuratMasuk = (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: "No File Uploaded" });
     const judul = req.body.judul;
     const tanggal_surat = req.body.tanggal_surat;
     const tanggal_upload = req.body.tanggal_upload;
     const status = req.body.status;
-    //const jenis_surat = req.body.jenis_surat;
+    // const jenis_surat = req.body.jenis_surat;
     const no_surat = req.body.no_surat;
     const file = req.files.file;
     const fileSize = file.data.length;
@@ -44,12 +44,12 @@ export const createSuratKeluar = (req, res) => {
     file.mv(`./dist/public/files/${fileName}`, async (err) => {
         if (err) return res.status(500).json({ msg: err.message });
         try {
-            await SuratKeluar.create({
+            await SuratMasuk.create({
                 no_surat: no_surat, judul: judul, tanggal_surat: tanggal_surat,
                 tanggal_upload: tanggal_upload, status: status, jenis_surat: jenis_surat
                 , file: url, fileName: fileName
             });
-            res.status(201).json({ msg: "SK Created Successfuly" });
+            res.status(201).json({ msg: "SM Created Successfuly" });
         } catch (error) {
             console.log(error.message);
             res.status(500).json({ msg: "Something went wrong" });
@@ -57,17 +57,17 @@ export const createSuratKeluar = (req, res) => {
     })
 
 }
-export const updateSuratKeluar = async (req, res) => {
-    const suratKeluar = await SuratKeluar.findOne({
+export const updateSuratMasuk = async (req, res) => {
+    const suratMasuk = await SuratMasuk.findOne({
         where: {
             id: req.params.id
         }
     });
-    if (!suratKeluar) return res.status(404).json({ msg: "No Data Found" });
+    if (!suratMasuk) return res.status(404).json({ msg: "No Data Found" });
 
     let fileName = "";
     if (req.fileName === null) {
-        fileName = suratKeluar.fileName;
+        fileName = suratMasuk.fileName;
     } else {
         const file = req.files.file;
         const fileSize = file.data.length;
@@ -79,7 +79,7 @@ export const updateSuratKeluar = async (req, res) => {
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({ msg: "Invalid Images" });
         if (fileSize > 10000000) return res.status(422).json({ msg: "Image must be less than 10 MB" });
 
-        const filepath = `./public/files/${suratKeluar.fileName}`;
+        const filepath = `./public/files/${suratMasuk.fileName}`;
         
 
         file.mv(`./public/files/${fileName}`, (err) => {
@@ -96,7 +96,7 @@ export const updateSuratKeluar = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/files/${fileName}`;
 
     try {
-        await SuratKeluar.update({
+        await SuratMasuk.update({
             no_surat: no_surat, judul: judul, tanggal_surat: tanggal_surat,
             tanggal_upload: tanggal_upload, status: status, jenis_surat: jenis_surat, file: url, fileName: fileName
         }, {
@@ -110,23 +110,23 @@ export const updateSuratKeluar = async (req, res) => {
     }
 }
 
-export const deleteSuratKeluar = async (req, res) => {
-    const suratKeluar = await SuratKeluar.findOne({
+export const deleteSuratMasuk = async (req, res) => {
+    const suratMasuk = await SuratMasuk.findOne({
         where: {
             id: req.params.id
         }
     });
-    if (!suratKeluar) return res.status(404).json({ msg: "No Data Found" });
+    if (!suratMasuk) return res.status(404).json({ msg: "No Data Found" });
 
     try {
-        const filepath = `./public/files/${suratKeluar.fileName}`;
+        const filepath = `./public/files/${suratMasuk.fileName}`;
         fs.unlinkSync(filepath);
-        await SuratKeluar.destroy({
+        await SuratMasuk.destroy({
             where: {
                 id: req.params.id
             }
         });
-        res.status(200).json({ msg: "SuratKeluar Deleted Successfuly" });
+        res.status(200).json({ msg: "SuratMasuk Deleted Successfuly" });
     } catch (error) {
         console.log(error.message);
     }

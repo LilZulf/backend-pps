@@ -3,7 +3,7 @@ import db from "../config/Database.js";
  
 const {DataTypes} = Sequelize;
  
-const SuratKeluar = db.define('tb_surat_keluar',{
+const SuratMasuk = db.define('tb_surat_masuk',{
     no_surat: DataTypes.STRING,
     judul: DataTypes.STRING,
     tanggal_surat: DataTypes.STRING,
@@ -16,7 +16,7 @@ const SuratKeluar = db.define('tb_surat_keluar',{
     freezeTableName:true
 });
  
-export default SuratKeluar;
+export default SuratMasuk;
  
 (async()=>{
     await db.sync();

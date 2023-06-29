@@ -8,6 +8,15 @@ import {
     updateSuratKeluar,
     deleteSuratKeluar
 } from "../controllers/SuratKeluarControllers.js";
+
+import {
+    getSuratMasuk,
+    getSuratMasukById,
+    createSuratMasuk,
+    updateSuratMasuk,
+    deleteSuratMasuk
+} from "../controllers/SuratMasukControllers.js";
+
 import {
     getUsers,
     getUsersById,
@@ -26,6 +35,11 @@ router.get('/suratkeluar/:id', authenticateToken, getSuratKeluarById);
 router.post('/suratkeluar', authenticateToken, createSuratKeluar);
 router.patch('/suratkeluar/:id', authenticateToken, updateSuratKeluar);
 router.delete('/suratkeluar/:id', authenticateToken, deleteSuratKeluar);
+router.get('/suratmasuk', authenticateToken, getSuratMasuk);
+router.get('/suratmasuk/:id', authenticateToken, getSuratMasukById);
+router.post('/suratmasuk', authenticateToken, createSuratMasuk);
+router.patch('/suratmasuk/:id', authenticateToken, updateSuratMasuk);
+router.delete('/suratmasuk/:id', authenticateToken, deleteSuratMasuk);
 router.get('/users', authenticateToken, getUsers);
 router.get('/user/:id', authenticateToken, getUsersById);
 router.post('/user/login', loginUser);
